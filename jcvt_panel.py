@@ -1,6 +1,8 @@
 import bpy
 from bpy.types import Panel
 
+from . utils.modifier_utils import get_modifier_of_type
+
 from . utils.select_utils import get_selected_curve, get_selected_object
 
 class JCVT_PT_Panel(Panel):
@@ -34,9 +36,19 @@ class JCVT_PT_Panel(Panel):
 
         row = layout.row()
         col = row.column()
-        op = col.operator('object.jcvt_create_curve_op', icon='VIEW_PERSPECTIVE', text="Create")
+        col.label(text="Twist:")
 
         col = row.column()
-        op = col.operator('object.jcvt_remove_curve_op', icon='VIEW_PERSPECTIVE', text="Remove")
+
+        mod_deform = get_modifier_of_type(sel_object, "SIMPLE_DEFORM")
+        if mod_deform:
+            col.prop(mod_deform, "angle")
+
+        row = layout.row()
+        col = row.column()
+        op = col.operator('object.jcvt_create_curve_op', icon='OUTLINER_OB_CURVE', text="Create")
+
+        col = row.column()
+        op = col.operator('object.jcvt_remove_curve_op', icon='CANCEL', text="Remove")
 
         

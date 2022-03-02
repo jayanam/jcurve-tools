@@ -25,6 +25,7 @@ class JCVT_OT_Curve_Remove(Operator):
     def execute(self, context):
         sel_object = get_selected_object(context)
         remove_modifier_of_type(sel_object, "ARRAY")
+        remove_modifier_of_type(sel_object, "SIMPLE_DEFORM")
         remove_modifier_of_type(sel_object, "CURVE")
         return {'FINISHED'}
 
@@ -47,12 +48,15 @@ class JCVT_OT_Curve_Create(Operator):
         sel_curve  = get_selected_curve(context)
         sel_object = get_selected_object(context)
 
-        mod_array = get_or_create_modifier(sel_object, "JCVT_Array", "ARRAY")
-        mod_curve = get_or_create_modifier(sel_object, "JCVT_Curve", "CURVE")
+        mod_array  = get_or_create_modifier(sel_object, "JCVT_Array", "ARRAY")
+        mod_deform = get_or_create_modifier(sel_object, "JCVT_SimpleDeform", "SIMPLE_DEFORM")
+        mod_curve  = get_or_create_modifier(sel_object, "JCVT_Curve", "CURVE")
 
         mod_array.use_merge_vertices = True
         mod_array.fit_type = 'FIT_CURVE'
         mod_array.curve = sel_curve
+
+        mod_deform.angle = 0
 
         mod_curve.object = sel_curve
         mod_curve.show_in_editmode = True
