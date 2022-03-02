@@ -59,5 +59,6 @@ class JCVT_OT_Curve_Create(Operator):
 
         make_active(sel_object)
         bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+        sel_object.location = (0,0,0)
    
         return {'FINISHED'}
