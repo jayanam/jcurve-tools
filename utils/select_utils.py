@@ -6,6 +6,13 @@ def get_selected_curve(context):
             return obj
     return None
 
+def get_selected_curves(context):
+    curves = []
+    for obj in context.selected_objects:
+        if obj.type == 'CURVE':
+            curves.append(obj)
+    return curves
+
 def get_selected_object(context):
     for obj in context.selected_objects:
         if obj.type == 'MESH':
@@ -44,8 +51,8 @@ def get_active():
     return bpy.context.view_layer.objects.active
 
 def make_active(obj):
-    obj.select_set(state=True)
     bpy.context.view_layer.objects.active = obj
+    obj.select_set(state=True)
 
 def select(obj):
     obj.select_set(state=True)

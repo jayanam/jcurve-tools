@@ -45,24 +45,33 @@ class JCVT_OT_Curve_Create(Operator):
 
     def execute(self, context):
 
-        sel_curve  = get_selected_curve(context)
+        sel_curves  = get_selected_curves(context)
         sel_object = get_selected_object(context)
 
-        mod_array  = get_or_create_modifier(sel_object, "JCVT_Array", "ARRAY")
-        mod_deform = get_or_create_modifier(sel_object, "JCVT_SimpleDeform", "SIMPLE_DEFORM")
-        mod_curve  = get_or_create_modifier(sel_object, "JCVT_Curve", "CURVE")
+        for sel_curve in sel_curves:
 
-        mod_array.use_merge_vertices = True
-        mod_array.fit_type = 'FIT_CURVE'
-        mod_array.curve = sel_curve
+            deselect_all()
 
-        mod_deform.angle = 0
+            make_active(sel_object)
+            
+            bpy.ops.object.duplicate(linked=False)
 
-        mod_curve.object = sel_curve
-        mod_curve.show_in_editmode = True
+            active_obj = get_active()
+            
+            mod_array  = get_or_create_modifier(active_obj, "JCVT_Array", "ARRAY")
+            mod_deform = get_or_create_modifier(active_obj, "JCVT_SimpleDeform", "SIMPLE_DEFORM")
+            mod_curve  = get_or_create_modifier(active_obj, "JCVT_Curve", "CURVE")
 
-        make_active(sel_object)
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        sel_object.location = (0,0,0)
+            mod_array.use_merge_vertices = True
+            mod_array.fit_type = 'FIT_CURVE'
+            mod_array.curve = sel_curve
+
+            mod_deform.angle = 0
+
+            mod_curve.object = sel_curve
+            mod_curve.show_in_editmode = True
+
+            bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
+            active_obj.location = (0,0,0)
    
         return {'FINISHED'}

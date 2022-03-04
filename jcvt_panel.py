@@ -51,4 +51,8 @@ class JCVT_PT_Panel(Panel):
         col = row.column()
         op = col.operator('object.jcvt_remove_curve_op', icon='CANCEL', text="Remove")
 
+        row = layout.row()
+        row.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Curve Creation Mode")
+
+
         
