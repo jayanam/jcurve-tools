@@ -7,7 +7,7 @@ from bpy_extras.view3d_utils import (
 
 def get_3d_for_2d(pos_2d, context):
 
-    result = None, None
+    result = None, None, None
 
     scene = context.scene
 

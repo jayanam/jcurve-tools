@@ -3,7 +3,7 @@ bl_info = {
     "author" : "jayanam",
     "description" : "Curve tools for Blender 2.8 - 3.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 2, 0, 2),
+    "version" : (0, 3, 0, 1),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
@@ -12,10 +12,12 @@ bl_info = {
 import bpy
 from bpy.props import *
 
-# Scene properties
+# Properties
 bpy.types.WindowManager.in_curve_mode = bpy.props.BoolProperty(name="Curve Mode", default = False)
 
-from .jcvt_panel import JCVT_PT_Panel
+bpy.types.Scene.bevel_depth = bpy.props.FloatProperty(name="Bevel Depth", default = 0)
+
+from .jcvt_panel import *
 from .jcvt_curve_create_op import *
 from .jcvt_pref import JCurvePrefs
 from .jcvt_create_curve_mode_op import *
@@ -23,7 +25,9 @@ from .jcvt_create_curve_mode_op import *
 
 addon_keymaps = []
 
-classes = ( JCVT_PT_Panel, JCVT_OT_Curve_Create, JCVT_OT_Curve_Remove, JCVT_OT_Create_Curve_Mode_Operator, JCurvePrefs )
+classes = ( JCVT_PT_Panel, JCVT_OT_Curve_Create, JCVT_OT_Curve_Remove, 
+            JCVT_OT_Create_Curve_Mode_Operator, JCurvePrefs,
+            JCVT_PT_Curve_Tools_Panel, JCVT_PT_Curve_Creator_Panel)
 
 def register():
     for c in classes:

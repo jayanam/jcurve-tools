@@ -8,7 +8,17 @@ from . utils.select_utils import get_selected_curve, get_selected_object
 class JCVT_PT_Panel(Panel):
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
-    bl_label = "Curve Creator"
+    bl_label = "JCurve"
+    bl_category = "JCurve"
+
+    def draw(self, context)    :
+        pass
+
+class JCVT_PT_Curve_Tools_Panel(Panel):
+    bl_parent_id = "JCVT_PT_Panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_label = "Curve & Mesh Tools"
     bl_category = "JCurve"
 
     def draw(self, context):
@@ -51,8 +61,19 @@ class JCVT_PT_Panel(Panel):
         col = row.column()
         op = col.operator('object.jcvt_remove_curve_op', icon='CANCEL', text="Remove")
 
+class JCVT_PT_Curve_Creator_Panel(Panel):
+
+    bl_parent_id = "JCVT_PT_Panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_label = "Curve Creator"
+    bl_category = "JCurve"
+
+    def draw(self, context):
+
+        layout = self.layout
         row = layout.row()
-        row.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Curve Creation Mode")
+        row.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Enter Creation Mode")
 
-
-        
+        row = layout.row()
+        row.prop(context.scene, 'bevel_depth')   

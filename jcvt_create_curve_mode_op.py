@@ -99,9 +99,11 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
     def to_bezier(self, context):
 
-        to_object()
-
         bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(0, 0, 0))
+
+        if context.scene.bevel_depth > 0:
+            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
+            bpy.context.object.data.use_fill_caps = True
 
         vertices = self._curve_shape.get_vertices().copy()
         curve = context.active_object
@@ -109,7 +111,6 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
         bez_points = curve.data.splines[0].bezier_points
         point_count = len(bez_points) - 1
         curve.data.splines[0].resolution_u = 24
-
 
         norm_start = self._curve_shape.get_normal_start()
         norm_end = self._curve_shape.get_normal_end()
@@ -156,7 +157,7 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
         blf.color(1, 1, 1, 1, 1)
 
         title = "- Curve Creation Mode -"
-        desc = "Ctrl + Click: Add points, Enter: Create, Ctrl + Enter: Create snapped"
+        desc = "Ctrl + Click: Add point, Enter: Create, Ctrl + Enter: Create snapped, Esc: Close"
 
         blf.position(0, xt - blf.dimensions(0, title)[0] / 2, 45, 0)
         blf.draw(0, title)
