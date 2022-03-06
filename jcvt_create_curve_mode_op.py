@@ -132,8 +132,6 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
     def to_curve(self, context):
         
-        to_object()
-
         bpy.ops.curve.primitive_nurbs_path_add(enter_editmode=True)
         bpy.ops.curve.select_all(action='SELECT')
         bpy.ops.curve.delete()
@@ -143,9 +141,9 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
             for vertex in vertices:
                 bpy.ops.curve.vertex_add(location=vertex)
 
-        self.apply_bevel(context)
-
         to_object()
+
+        self.apply_bevel(context)
 
 
 	# Draw handler to paint in pixels

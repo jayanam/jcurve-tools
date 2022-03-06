@@ -3,7 +3,7 @@ bl_info = {
     "author" : "jayanam",
     "description" : "Curve tools for Blender 2.8 - 3.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 3, 0, 2),
+    "version" : (0, 3, 1, 0),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
@@ -25,7 +25,7 @@ from .jcvt_create_curve_mode_op import *
 
 addon_keymaps = []
 
-classes = ( JCVT_PT_Panel, JCVT_OT_Curve_Create, JCVT_OT_Curve_Remove, 
+classes = ( JCVT_PT_Panel, JCVT_OT_Curve_Create, JCVT_OT_Curve_Remove, JCVT_OT_Curve_Mesh_Create,
             JCVT_OT_Create_Curve_Mode_Operator, JCurvePrefs,
             JCVT_PT_Curve_Tools_Panel, JCVT_PT_Curve_Creator_Panel)
 

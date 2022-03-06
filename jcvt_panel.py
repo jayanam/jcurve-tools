@@ -76,4 +76,7 @@ class JCVT_PT_Curve_Creator_Panel(Panel):
         row.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Enter Creation Mode")
 
         row = layout.row()
-        row.prop(context.scene, 'bevel_depth')   
+        row.prop(context.scene, 'bevel_depth') 
+
+        row = layout.row()
+        row.operator('object.jcvt_curve_to_mesh_convert', icon='MESH_DATA', text="To Mesh")
