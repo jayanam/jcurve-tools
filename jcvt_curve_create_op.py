@@ -17,13 +17,13 @@ class JCVT_OT_Curve_Remove(Operator):
 
         sel_object = get_selected_object(context)
 
-        return sel_object
+        return has_modifiers(sel_object, ["ARRAY","CURVE" ])
 
     def execute(self, context):
         sel_object = get_selected_object(context)
-        remove_modifier_of_type(sel_object, "ARRAY")
-        remove_modifier_of_type(sel_object, "SIMPLE_DEFORM")
-        remove_modifier_of_type(sel_object, "CURVE")
+        make_active(sel_object)
+        bpy.ops.object.delete(use_global=False, confirm=False)
+
         return {'FINISHED'}
 
 class JCVT_OT_Curve_Create(Operator):
@@ -85,8 +85,11 @@ class JCVT_OT_Curve_Mesh_Create(Operator):
 
       selected_curves = [c for c in context.selected_objects if c.type == "CURVE" and c.visible_get()]
       if len(selected_curves) == 0:
-        return False
+          return False
 
+      if not context.active_object:
+          return False
+          
       if context.active_object.mode != "OBJECT" and context.active_object.mode != "EDIT":
           return False
   
