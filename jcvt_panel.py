@@ -44,15 +44,29 @@ class JCVT_PT_Curve_Tools_Panel(Panel):
         if sel_object:
             col.label(text=sel_object.name)
 
-        row = layout.row()
-        col = row.column()
-        col.label(text="Twist:")
+        # Properties of Array
+        mod_array = get_modifier_of_type(sel_object, "ARRAY")
+        if mod_array:
+            row = layout.row()
+            row.prop(mod_array, "fit_type")
 
-        col = row.column()
+            if mod_array.fit_type == "FIT_LENGTH":
+                row = layout.row()
+                row.prop(mod_array, "fit_length")
 
+            if mod_array.fit_type == "FIXED_COUNT":
+                row = layout.row()
+                row.prop(mod_array, "count")
+ 
+            row = layout.row()
+            row.prop(mod_array, "relative_offset_displace", index=0, text="Offset")
+
+
+        # Properties of simple deform
         mod_deform = get_modifier_of_type(sel_object, "SIMPLE_DEFORM")
         if mod_deform:
-            col.prop(mod_deform, "angle")
+            row = layout.row()
+            row.prop(mod_deform, "angle", text="Twist angle")
 
         row = layout.row()
         col = row.column()
