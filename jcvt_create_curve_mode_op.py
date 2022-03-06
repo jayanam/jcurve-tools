@@ -101,9 +101,7 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
         bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(0, 0, 0))
 
-        if context.scene.bevel_depth > 0:
-            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
-            bpy.context.object.data.use_fill_caps = True
+        self.apply_bevel(context)
 
         vertices = self._curve_shape.get_vertices().copy()
         curve = context.active_object
@@ -127,6 +125,11 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
         to_object()
 
+    def apply_bevel(self, context):
+        if context.scene.bevel_depth > 0:
+            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
+            bpy.context.object.data.use_fill_caps = True
+
     def to_curve(self, context):
         
         to_object()
@@ -139,6 +142,8 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
         if vertices:
             for vertex in vertices:
                 bpy.ops.curve.vertex_add(location=vertex)
+
+        self.apply_bevel(context)
 
         to_object()
 
