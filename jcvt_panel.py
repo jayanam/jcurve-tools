@@ -68,6 +68,10 @@ class JCVT_PT_Curve_Tools_Panel(Panel):
             row = layout.row()
             row.prop(mod_deform, "angle", text="Twist angle")
 
+        if sel_curve:
+            row = layout.row()
+            row.prop(sel_curve.data, "bevel_depth")
+
         row = layout.row()
         col = row.column()
         op = col.operator('object.jcvt_create_curve_op', icon='OUTLINER_OB_CURVE', text="Create")
