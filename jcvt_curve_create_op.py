@@ -108,3 +108,49 @@ class JCVT_OT_Curve_Mesh_Create(Operator):
         bpy.ops.object.convert(target='MESH')
 
         return {'FINISHED'}
+
+class JCVT_OT_Curve_From_Mesh_Create(Operator):
+    bl_idname = "object.jcvt_curve_from_mesh_convert"
+    bl_label = "Mesh Selection to curve"
+    bl_description = "Convert from mesh selection to curve"
+    bl_options = {'REGISTER', 'UNDO'}   
+
+    @classmethod
+    def poll(cls, context): 
+
+      if not context.active_object:
+          return False
+          
+      if context.active_object.mode != "EDIT":
+          return False
+  
+      return True
+
+    def apply_bevel(self, context):
+        if context.scene.bevel_depth > 0:
+            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
+            bpy.context.object.data.use_fill_caps = True
+
+    def execute(self, context): 
+
+        bpy.ops.mesh.duplicate_move()
+
+        bpy.ops.mesh.separate(type='SELECTED')
+
+        to_object()
+
+        bpy.ops.object.convert(target='CURVE')
+
+        selected_curves = [c for c in context.selected_objects if c.type == "CURVE" and c.visible_get()]
+
+        deselect_all()
+
+        for sel_curve in selected_curves:
+            make_active(sel_curve)    
+
+        # Set curve properties
+        self.apply_bevel(context)
+
+        bpy.ops.object.shade_smooth()
+  
+        return {'FINISHED'}

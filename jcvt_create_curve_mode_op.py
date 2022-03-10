@@ -125,6 +125,9 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
         to_object()
 
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
+
     def apply_bevel(self, context):
         if context.scene.bevel_depth > 0:
             bpy.context.object.data.bevel_depth = context.scene.bevel_depth

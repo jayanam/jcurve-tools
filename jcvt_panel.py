@@ -98,3 +98,6 @@ class JCVT_PT_Curve_Creator_Panel(Panel):
 
         row = layout.row()
         row.operator('object.jcvt_curve_to_mesh_convert', icon='MESH_DATA', text="To Mesh")
+
+        row = layout.row()
+        row.operator('object.jcvt_curve_from_mesh_convert', icon='MESH_DATA', text="From Mesh")
