@@ -7,7 +7,11 @@ class VertexContainer:
   def __init__(self):
     self.__shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
     self.__vertices = []
+    self.__type = 'POINTS'
     self.__batch_points = None
+
+  def set_type(self, type):
+    self.__type = type
 
   def append(self, vertex):
     self.__vertices.append(vertex)
@@ -21,7 +25,7 @@ class VertexContainer:
     return self.__vertices
 
   def build_batch(self):
-    self.__batch_points = batch_for_shader(self.__shader, 'POINTS', {"pos": self.__vertices})
+    self.__batch_points = batch_for_shader(self.__shader, self.__type, {"pos": self.__vertices})
 
   def draw(self):
     if self.__batch_points:

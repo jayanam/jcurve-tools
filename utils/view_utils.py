@@ -2,8 +2,29 @@ import bpy
 
 from bpy_extras.view3d_utils import (
     region_2d_to_origin_3d,
-    region_2d_to_vector_3d
+    region_2d_to_vector_3d,
+    region_2d_to_location_3d
 )
+
+import mathutils
+
+def get_view_rotation(context):
+    rv3d      = context.space_data.region_3d
+    view_rot  = rv3d.view_rotation
+    return view_rot  
+
+def get_view_direction(context):
+    view_rot  = get_view_rotation(context)
+    dir = view_rot @ mathutils.Vector((0,0,-1))
+    return dir.normalized()
+
+def get_3d_vertex(context, vertex_2d):
+    region    = context.region
+    rv3d      = context.space_data.region_3d
+    distance = 10
+    dir = get_view_direction(context) * -1 * distance
+    
+    return region_2d_to_location_3d(region, rv3d, vertex_2d, dir)   
 
 def get_3d_for_2d(pos_2d, context):
 

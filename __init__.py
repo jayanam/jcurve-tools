@@ -3,7 +3,7 @@ bl_info = {
     "author" : "jayanam",
     "description" : "Curve tools for Blender 2.8 - 3.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 4, 1, 0),
+    "version" : (0, 4, 1, 1),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
@@ -21,13 +21,15 @@ from .jcvt_panel import *
 from .jcvt_curve_create_op import *
 from .jcvt_pref import JCurvePrefs
 from .jcvt_create_curve_mode_op import *
+from .jcvt_create_curve_loop_mode_op import *
 
 
 addon_keymaps = []
 
 classes = ( JCVT_PT_Panel, JCVT_OT_Curve_Create, JCVT_OT_Curve_Remove, JCVT_OT_Curve_Mesh_Create,
             JCVT_OT_Create_Curve_Mode_Operator, JCurvePrefs,
-            JCVT_PT_Curve_Tools_Panel, JCVT_PT_Curve_Creator_Panel, JCVT_OT_Curve_From_Mesh_Create)
+            JCVT_PT_Curve_Tools_Panel, JCVT_PT_Curve_Creator_Panel, JCVT_OT_Curve_From_Mesh_Create,
+            JCVT_OT_Create_Curve_Loop_Mode_Operator)
 
 def register():
     for c in classes:
