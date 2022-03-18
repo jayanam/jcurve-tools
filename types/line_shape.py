@@ -19,8 +19,14 @@ class LineShape:
     def get_vertices(self):
         return self._vertices.get_vertices()
 
-    def draw(self) :
+    def set_vertex(self, index, vertex):
+        self._vertices.set_vertex(index, vertex)
+
+    def draw(self):
         self._vertices.draw()
 
     def reset(self):
         self._vertices.clear()
+
+    def is_initialized(self):
+        return self._vertices.get_vertex_count() == 2
