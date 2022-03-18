@@ -24,13 +24,21 @@ class VertexContainer:
   def get_vertices(self):
     return self.__vertices
 
+  def get_vertex_count(self):
+    return len(self.__vertices)
+
+  def set_vertex(self, index, vertex):
+    self.__vertices[index] = vertex
+    self.build_batch()
+
   def build_batch(self):
     self.__batch_points = batch_for_shader(self.__shader, self.__type, {"pos": self.__vertices})
 
   def draw(self):
     if self.__batch_points:
+      print("Draw")
       self.__shader.bind()
       bgl.glPointSize(10)
-      self.__shader.uniform_float("color", (0.1, 0.1, 0.8, 1.0))
+      self.__shader.uniform_float("color", (1.0, 1.0, 1.0, 1.0))
       self.__batch_points.draw(self.__shader)
       bgl.glPointSize(1)

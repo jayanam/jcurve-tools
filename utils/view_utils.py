@@ -21,7 +21,9 @@ def get_view_direction(context):
 def get_3d_vertex(context, vertex_2d):
     region    = context.region
     rv3d      = context.space_data.region_3d
-    distance = 10
+
+    # TODO: Check for viewport distance
+    distance = 3
     dir = get_view_direction(context) * -1 * distance
     
     return region_2d_to_location_3d(region, rv3d, vertex_2d, dir)   

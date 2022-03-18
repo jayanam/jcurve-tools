@@ -70,7 +70,11 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 
         # The mouse is moved
         if event.type == "MOUSEMOVE":
-            pass
+            mouse_pos_2d = (event.mouse_region_x, event.mouse_region_y)
+            mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
+
+            if mouse_pos_3d and self._line_shape.is_initialized():
+                self._line_shape.set_vertex(1, mouse_pos_3d)
             
         # Left mouse button is released
         if event.value == "RELEASE" and event.type == "LEFTMOUSE":
@@ -82,9 +86,10 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
             mouse_pos_2d = (event.mouse_region_x, event.mouse_region_y)
 
             mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
-            if mouse_pos_3d:
-               self._line_shape.append(mouse_pos_3d)
-               result = "RUNNING_MODAL"
+            if mouse_pos_3d and not self._line_shape.is_initialized():
+                self._line_shape.append(mouse_pos_3d)
+                self._line_shape.append(mouse_pos_3d.copy())
+                result = "RUNNING_MODAL"
 
         return { result }
 
