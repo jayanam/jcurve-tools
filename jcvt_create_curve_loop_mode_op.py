@@ -155,16 +155,13 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         v1_n = (self._line_shape.get_end_point() - self._line_shape.get_start_point()).normalized()
 
         t = 0
-
-        # TODO: Make size configurable
-        count = 16
         r = self._line_shape.get_length() / 2
 
         circle_points = []
 
         while t < 2 * math.pi:
             circle_points.append(center_object + r * math.cos(t) * v1_n + r * math.sin(t) * direction)
-            t += 2 * math.pi / count
+            t += 2 * math.pi / context.scene.loop_cuts
 
         # 7. raycast all points of the circle in direction to center_object and collect hit_points
         for cp in circle_points:
