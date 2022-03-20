@@ -137,22 +137,21 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 	# Draw handler to paint in 3d view
     def draw_callback_3d(self, op, context):        
         self._line_shape.draw()
-        # self._loop_shape.draw()
+        self._loop_shape.draw()
 
     def project_loop_onto_object(self, context):
         selected_obj = get_selected_object(context)
         if not selected_obj:
             self.report({'INFO'}, 'Please select and object for this operation')
 
-        center_object = self.get_center_object(context)
+        center_object, direction = self.get_center_object(context)
 
         # 6. Draw cirle around center_object, diameter = line_length
-        _, _, vz = get_view_matrix(context)
-
-        v1, direction = self._line_shape.get_end_point() - self._line_shape.get_start_point(), -vz.normalized()       
-        v1_n = v1.normalized()
+        v1_n = (self._line_shape.get_end_point() - self._line_shape.get_start_point()).normalized()
 
         t = 0
+
+        # TODO: Make size configurable
         count = 16
         r = self._line_shape.get_length() / 2
 
@@ -180,6 +179,8 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 
         to_object()
 
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
         apply_bevel(context)
         
     def get_center_object(self, context):
@@ -195,4 +196,4 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 
         _, line_center_hit2 = scene_raycast(direction, line_center_hit1 + (direction * 0.05), context)
 
-        return get_center_vectors(line_center_hit1, line_center_hit2)
+        return get_center_vectors(line_center_hit1, line_center_hit2), direction

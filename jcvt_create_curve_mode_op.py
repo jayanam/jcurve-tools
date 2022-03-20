@@ -136,6 +136,8 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
         
         to_object()
 
+        bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
+
         apply_bevel(context)
 
 	# Draw handler to paint in pixels
