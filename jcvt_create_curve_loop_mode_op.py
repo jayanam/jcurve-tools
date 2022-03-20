@@ -33,6 +33,8 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         self._line_shape = LineShape()
         self._loop_shape = CurveShape()
 
+        self._debug_shape = CurveShape()
+
     def invoke(self, context, event):
         args = (self, context)  
 
@@ -138,6 +140,7 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
     def draw_callback_3d(self, op, context):        
         self._line_shape.draw()
         self._loop_shape.draw()
+        # self._debug_shape.draw()
 
     def project_loop_onto_object(self, context):
         selected_obj = get_selected_object(context)
@@ -145,6 +148,8 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
             self.report({'INFO'}, 'Please select and object for this operation')
 
         center_object, direction = self.get_center_object(context)
+
+        # self._debug_shape.append_vertex(center_object)
 
         # 6. Draw cirle around center_object, diameter = line_length
         v1_n = (self._line_shape.get_end_point() - self._line_shape.get_start_point()).normalized()
@@ -194,6 +199,10 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 
         _, line_center_hit1 = scene_raycast(direction, origin, context)
 
-        _, line_center_hit2 = scene_raycast(direction, line_center_hit1 + (direction * 0.05), context)
+        # self._debug_shape.append_vertex(line_center_hit1)
+
+        _, line_center_hit2 = scene_raycast(direction, line_center_hit1 + (direction * 0.01), context)
+
+        # self._debug_shape.append_vertex(line_center_hit2)
 
         return get_center_vectors(line_center_hit1, line_center_hit2), direction
