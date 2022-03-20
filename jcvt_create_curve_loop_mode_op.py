@@ -93,15 +93,17 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 
             mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
             if mouse_pos_3d:
-                if not self._line_shape.is_initialized():
+
+                if not self._line_shape.is_initialized() and event.ctrl:
                     self._line_shape.append(mouse_pos_2d, mouse_pos_3d)
                     self._line_shape.append(mouse_pos_2d, mouse_pos_3d.copy())
-                else:
+                    result = "RUNNING_MODAL"
+
+                elif self._line_shape.is_initialized() :
                     self.project_loop_onto_object(context)
                     self._line_shape.reset()
                     self._loop_shape.reset()
-
-                result = "RUNNING_MODAL"
+                    result = "RUNNING_MODAL"
 
         return { result }     
 
@@ -126,14 +128,14 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         title = "- Curve Loop Creation Mode -"
 
         if not self._line_shape.is_initialized():
-            desc = "Click: Start to draw line"
+            desc = "Ctrl + Click: Start to draw line"
         else:
-            desc = "Click: Create curve"
+            desc = "Click: End line"
 
         blf.position(0, xt - blf.dimensions(0, title)[0] / 2, 45, 0)
         blf.draw(0, title)
 
-        blf.position(1, xt - blf.dimensions(0, desc)[0] / 2, 20, 0)
+        blf.position(1, xt - blf.dimensions(1, desc)[0] / 2, 20, 0)
         blf.draw(1, desc)
 
 	# Draw handler to paint in 3d view

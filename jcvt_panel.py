@@ -97,9 +97,12 @@ class JCVT_PT_Curve_Creator_Panel(Panel):
         col = row.column()
         col.operator('object.jcvt_create_curve_loop_mode_op', icon='OUTLINER_OB_CURVE', text="Loops Mode")
 
-
         row = layout.row()
-        row.prop(context.scene, 'bevel_depth') 
+        col = row.column()
+        col.prop(context.scene, 'bevel_depth') 
+
+        col = row.column()
+        col.prop(context.scene, 'loop_cuts') 
 
         row = layout.row()
         row.operator('object.jcvt_curve_to_mesh_convert', icon='MESH_DATA', text="To Mesh")

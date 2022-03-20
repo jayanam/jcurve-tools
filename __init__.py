@@ -3,7 +3,7 @@ bl_info = {
     "author" : "jayanam",
     "description" : "Curve tools for Blender 2.8 - 3.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 4, 2, 4),
+    "version" : (0, 4, 2, 5),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
@@ -16,6 +16,8 @@ from bpy.props import *
 bpy.types.WindowManager.in_curve_mode = bpy.props.BoolProperty(name="Curve Mode", default = False)
 
 bpy.types.Scene.bevel_depth = bpy.props.FloatProperty(name="Bevel Depth", default = 0)
+
+bpy.types.Scene.loop_cuts = bpy.props.IntProperty(name="Loop Cuts", default = 16)
 
 from .jcvt_panel import *
 from .jcvt_curve_create_op import *
