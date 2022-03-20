@@ -78,7 +78,7 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
             mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
 
             if mouse_pos_3d and self._line_shape.is_initialized():
-                self._line_shape.set_vertex(1, mouse_pos_3d)
+                self._line_shape.set_vertex(1, mouse_pos_2d, mouse_pos_3d)
             
         # Left mouse button is released
         if event.value == "RELEASE" and event.type == "LEFTMOUSE":
@@ -92,10 +92,9 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
             mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
             if mouse_pos_3d:
                 if not self._line_shape.is_initialized():
-                    self._line_shape.append(mouse_pos_3d)
-                    self._line_shape.append(mouse_pos_3d.copy())
+                    self._line_shape.append(mouse_pos_2d, mouse_pos_3d)
+                    self._line_shape.append(mouse_pos_2d, mouse_pos_3d.copy())
                 else:
-
                     self.project_loop_onto_object(context)
                     self._line_shape.reset()
                     self._loop_shape.reset()
@@ -190,13 +189,9 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         # 3. raycast from line_center_hit1 in the same direction (line_center_hit2)
         # 4. get center of line_center_hit1 and line_center_hit2 (center_object)
 
-        line_center = get_center_vectors(self._line_shape.get_end_point(), self._line_shape.get_start_point())
+        origin, direction = get_origin_and_direction( self._line_shape.get_center_2d(), context)
 
-        vx, vy, vz = get_view_matrix(context)
-
-        _, direction = self._line_shape.get_end_point() - self._line_shape.get_start_point(), -vz.normalized()
-
-        _, line_center_hit1 = scene_raycast(direction, line_center, context)
+        _, line_center_hit1 = scene_raycast(direction, origin, context)
 
         _, line_center_hit2 = scene_raycast(direction, line_center_hit1 + (direction * 0.05), context)
 

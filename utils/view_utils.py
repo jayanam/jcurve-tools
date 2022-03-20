@@ -14,9 +14,7 @@ def get_view_rotation(context):
     return view_rot  
 
 def get_view_direction(context):
-    rv3d      = context.space_data.region_3d
     view_rot  = get_view_rotation(context)
-    view_matrix = rv3d.view_matrix
     
     dir = view_rot @ mathutils.Vector((0,0,-1))
 

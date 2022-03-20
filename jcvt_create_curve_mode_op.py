@@ -133,14 +133,6 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
     def to_curve(self, context):
         
         path_from_vertices(context, self._curve_shape.get_vertices())
-        # bpy.ops.curve.primitive_nurbs_path_add(enter_editmode=True)
-        # bpy.ops.curve.select_all(action='SELECT')
-        # bpy.ops.curve.delete()
-
-        # vertices = self._curve_shape.get_vertices().copy()
-        # if vertices:
-        #     for vertex in vertices:
-        #         bpy.ops.curve.vertex_add(location=vertex)
         
         to_object()
 
