@@ -38,6 +38,8 @@ class VertexContainer:
     if self.__batch_points and self.get_vertex_count() > 0:
       self.__shader.bind()
       bgl.glPointSize(10)
+      bgl.glLineWidth(4)
       self.__shader.uniform_float("color", (1.0, 1.0, 1.0, 1.0))
       self.__batch_points.draw(self.__shader)
       bgl.glPointSize(1)
+      bgl.glLineWidth(1)

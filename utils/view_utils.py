@@ -68,9 +68,6 @@ def get_origin_and_direction(pos_2d, context):
     return origin, direction
 
 def get_center_vectors(v1 : mathutils.Vector, v2 : mathutils.Vector):
-    region    = bpy.context.region
-    rv3d      = bpy.context.space_data.region_3d
-
     return (v2 + v1) / 2
 
 def obj_ray_cast(direction, origin, context):
