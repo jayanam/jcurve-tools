@@ -3,6 +3,8 @@ import bpy
 from bpy.types import Operator
 from bpy.props import *
 
+from .utils.curve_utils import *
+
 from .utils.modifier_utils import *
 from .utils.select_utils import *
 
@@ -126,11 +128,6 @@ class JCVT_OT_Curve_From_Mesh_Create(Operator):
   
       return True
 
-    def apply_bevel(self, context):
-        if context.scene.bevel_depth > 0:
-            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
-            bpy.context.object.data.use_fill_caps = True
-
     def execute(self, context): 
 
         bpy.ops.mesh.duplicate_move()
@@ -149,7 +146,7 @@ class JCVT_OT_Curve_From_Mesh_Create(Operator):
             make_active(sel_curve)    
 
         # Set curve properties
-        self.apply_bevel(context)
+        apply_bevel(context)
 
         bpy.ops.object.shade_smooth()
   

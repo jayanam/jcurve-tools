@@ -1,9 +1,12 @@
 import blf
-import bmesh
+import math
 import bpy
 from bpy.types import Operator
 from bpy.props import *
 
+from .utils.curve_utils import *
+
+from .types.curve_shape import CurveShape
 from .types.line_shape import LineShape
 
 from .types.vertices import *
@@ -28,6 +31,7 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         self.draw_handle_2d = None
         self.draw_handle_3d = None
         self._line_shape = LineShape()
+        self._loop_shape = CurveShape()
 
     def invoke(self, context, event):
         args = (self, context)  
@@ -86,12 +90,19 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
             mouse_pos_2d = (event.mouse_region_x, event.mouse_region_y)
 
             mouse_pos_3d = get_3d_vertex(context, mouse_pos_2d)
-            if mouse_pos_3d and not self._line_shape.is_initialized():
-                self._line_shape.append(mouse_pos_3d)
-                self._line_shape.append(mouse_pos_3d.copy())
+            if mouse_pos_3d:
+                if not self._line_shape.is_initialized():
+                    self._line_shape.append(mouse_pos_3d)
+                    self._line_shape.append(mouse_pos_3d.copy())
+                else:
+
+                    self.project_loop_onto_object(context)
+                    self._line_shape.reset()
+                    self._loop_shape.reset()
+
                 result = "RUNNING_MODAL"
 
-        return { result }
+        return { result }     
 
     def finish(self):
         self.unregister_handlers(bpy.context)
@@ -112,7 +123,11 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         blf.color(1, 1, 1, 1, 1)
 
         title = "- Curve Loop Creation Mode -"
-        desc = "Click: Start to draw Line"
+
+        if not self._line_shape.is_initialized():
+            desc = "Click: Start to draw line"
+        else:
+            desc = "Click: Create curve"
 
         blf.position(0, xt - blf.dimensions(0, title)[0] / 2, 45, 0)
         blf.draw(0, title)
@@ -123,3 +138,66 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
 	# Draw handler to paint in 3d view
     def draw_callback_3d(self, op, context):        
         self._line_shape.draw()
+        # self._loop_shape.draw()
+
+    def project_loop_onto_object(self, context):
+        selected_obj = get_selected_object(context)
+        if not selected_obj:
+            self.report({'INFO'}, 'Please select and object for this operation')
+
+        center_object = self.get_center_object(context)
+
+        # 6. Draw cirle around center_object, diameter = line_length
+        _, _, vz = get_view_matrix(context)
+
+        v1, direction = self._line_shape.get_end_point() - self._line_shape.get_start_point(), -vz.normalized()       
+        v1_n = v1.normalized()
+
+        t = 0
+        count = 16
+        r = self._line_shape.get_length() / 2
+
+        circle_points = []
+
+        while t < 2 * math.pi:
+            circle_points.append(center_object + r * math.cos(t) * v1_n + r * math.sin(t) * direction)
+            t += 2 * math.pi / count
+
+        # 7. raycast all points of the circle in direction to center_object and collect hit_points
+        for cp in circle_points:
+            hit, hit_vertex = scene_raycast(-(cp - center_object).normalized(), cp, context)
+            if hit:
+                self._loop_shape.append_vertex(hit_vertex)
+
+        # 8. Create curve from points
+        self.to_curve(context)
+
+
+    def to_curve(self, context):
+        
+        path_from_vertices(context, self._loop_shape.get_vertices())
+
+        context.object.data.splines[0].use_cyclic_u = True
+
+        to_object()
+
+        apply_bevel(context)
+        
+    def get_center_object(self, context):
+        
+        # 1. Get center of line (line_center)     
+        # 2. raycast from line_center onto selected object (line_center_hit1)
+        # 3. raycast from line_center_hit1 in the same direction (line_center_hit2)
+        # 4. get center of line_center_hit1 and line_center_hit2 (center_object)
+
+        line_center = get_center_vectors(self._line_shape.get_end_point(), self._line_shape.get_start_point())
+
+        vx, vy, vz = get_view_matrix(context)
+
+        _, direction = self._line_shape.get_end_point() - self._line_shape.get_start_point(), -vz.normalized()
+
+        _, line_center_hit1 = scene_raycast(direction, line_center, context)
+
+        _, line_center_hit2 = scene_raycast(direction, line_center_hit1 + (direction * 0.05), context)
+
+        return get_center_vectors(line_center_hit1, line_center_hit2)

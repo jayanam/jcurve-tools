@@ -91,7 +91,12 @@ class JCVT_PT_Curve_Creator_Panel(Panel):
 
         layout = self.layout
         row = layout.row()
-        row.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Enter Creation Mode")
+        col = row.column()
+        col.operator('object.jcvt_create_curve_mode_op', icon='OUTLINER_OB_CURVE', text="Points Mode")
+
+        col = row.column()
+        col.operator('object.jcvt_create_curve_loop_mode_op', icon='OUTLINER_OB_CURVE', text="Loops Mode")
+
 
         row = layout.row()
         row.prop(context.scene, 'bevel_depth') 

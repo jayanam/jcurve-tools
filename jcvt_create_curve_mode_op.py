@@ -3,11 +3,13 @@ import bmesh
 import bpy
 from bpy.types import Operator
 from bpy.props import *
+
 from . types.curve_shape import CurveShape
 
 from . types.vertices import *
 from . utils.view_utils import *
 from . utils.select_utils import *
+from . utils.curve_utils import *
 
 class JCVT_OT_Create_Curve_Mode_Operator(Operator):
     bl_idname = "object.jcvt_create_curve_mode_op"
@@ -101,7 +103,7 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
 
         bpy.ops.curve.primitive_bezier_curve_add(enter_editmode=True, location=(0, 0, 0))
 
-        self.apply_bevel(context)
+        apply_bevel(context)
 
         vertices = self._curve_shape.get_vertices().copy()
         curve = context.active_object
@@ -128,26 +130,21 @@ class JCVT_OT_Create_Curve_Mode_Operator(Operator):
         bpy.ops.object.origin_set(type='ORIGIN_GEOMETRY', center='MEDIAN')
 
 
-    def apply_bevel(self, context):
-        if context.scene.bevel_depth > 0:
-            bpy.context.object.data.bevel_depth = context.scene.bevel_depth
-            bpy.context.object.data.use_fill_caps = True
-
     def to_curve(self, context):
         
-        bpy.ops.curve.primitive_nurbs_path_add(enter_editmode=True)
-        bpy.ops.curve.select_all(action='SELECT')
-        bpy.ops.curve.delete()
+        path_from_vertices(context, self._curve_shape.get_vertices())
+        # bpy.ops.curve.primitive_nurbs_path_add(enter_editmode=True)
+        # bpy.ops.curve.select_all(action='SELECT')
+        # bpy.ops.curve.delete()
 
-        vertices = self._curve_shape.get_vertices().copy()
-        if vertices:
-            for vertex in vertices:
-                bpy.ops.curve.vertex_add(location=vertex)
-
+        # vertices = self._curve_shape.get_vertices().copy()
+        # if vertices:
+        #     for vertex in vertices:
+        #         bpy.ops.curve.vertex_add(location=vertex)
+        
         to_object()
 
-        self.apply_bevel(context)
-
+        apply_bevel(context)
 
 	# Draw handler to paint in pixels
     def draw_callback_2d(self, op, context):

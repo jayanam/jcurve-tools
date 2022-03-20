@@ -8,10 +8,13 @@ class CurveShape:
         self._vertices = VertexContainer()
 
     def get_start_point(self):
-        return self._vertices[0]
+        return self._vertices.get_vertices()[0]
 
     def get_end_point(self):
-        return self._vertices[-1]
+        return self._vertices.get_vertices()[-1]
+
+    def append_vertex(self, vertex):
+        self._vertices.append(vertex)
 
     def append(self, vertex, normal):
         self._vertices.append(vertex)

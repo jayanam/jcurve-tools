@@ -6,12 +6,13 @@ class LineShape:
     def __init__(self):
         self._vertices = VertexContainer()
         self._vertices.set_type('LINES')
+        self._vertices_2d = []
 
     def get_start_point(self):
-        return self._vertices.first_vertex
+        return self._vertices.get_vertices()[0]
 
     def get_end_point(self):
-        return self._vertices.last_vertex
+        return self._vertices.get_vertices()[-1]
 
     def append(self, vertex):
         self._vertices.append(vertex)
@@ -21,6 +22,9 @@ class LineShape:
 
     def set_vertex(self, index, vertex):
         self._vertices.set_vertex(index, vertex)
+
+    def get_length(self):
+        return (self.get_end_point() - self.get_start_point()).length
 
     def draw(self):
         self._vertices.draw()
