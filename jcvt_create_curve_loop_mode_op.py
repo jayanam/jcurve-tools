@@ -145,9 +145,6 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         # self._debug_shape.draw()
 
     def project_loop_onto_object(self, context):
-        selected_obj = get_selected_object(context)
-        if not selected_obj:
-            self.report({'INFO'}, 'Please select and object for this operation')
 
         center_object, direction = self.get_center_object(context)
 

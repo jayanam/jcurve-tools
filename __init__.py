@@ -3,7 +3,7 @@ bl_info = {
     "author" : "jayanam",
     "description" : "Curve tools for Blender 2.8 - 3.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 4, 2, 5),
+    "version" : (0, 4, 2, 6),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
