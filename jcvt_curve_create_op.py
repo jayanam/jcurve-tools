@@ -72,7 +72,7 @@ class JCVT_OT_Curve_Create(Operator):
             mod_curve.show_in_editmode = True
 
             bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-            active_obj.location = (0,0,0)
+            active_obj.location = sel_curve.location
    
         return {'FINISHED'}
 

@@ -76,8 +76,11 @@ class JCVT_PT_Curve_Tools_Panel(Panel):
         col = row.column()
         op = col.operator('object.jcvt_create_curve_op', icon='OUTLINER_OB_CURVE', text="Create")
 
+        # col = row.column()
+        # op = col.operator('object.jcvt_remove_curve_op', icon='CANCEL', text="Remove")
+
         col = row.column()
-        op = col.operator('object.jcvt_remove_curve_op', icon='CANCEL', text="Remove")
+        op = col.operator('object.jcvt_apply_all_mod_op', icon='CHECKMARK', text="Apply")
 
 class JCVT_PT_Curve_Creator_Panel(Panel):
 
