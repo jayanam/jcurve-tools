@@ -12,6 +12,7 @@ from .types.line_shape import LineShape
 from .types.vertices import *
 from .utils.view_utils import *
 from .utils.select_utils import *
+from .utils.textutils import blf_set_size
 
 class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
     bl_idname = "object.jcvt_create_curve_loop_mode_op"
@@ -119,10 +120,11 @@ class JCVT_OT_Create_Curve_Loop_Mode_Operator(Operator):
         xt = int(region.width / 2.0)
 
         # Draw text for draw mode
-        blf.size(0, 22, 72)
+        blf_set_size(0,22)
+
         blf.color(0, 1, 1, 1, 1)
 
-        blf.size(1, 16, 72)
+        blf_set_size(1, 16)
         blf.color(1, 1, 1, 1, 1)
 
         title = "- Curve Loop Creation Mode -"

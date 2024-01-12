@@ -5,7 +5,7 @@ from gpu_extras.batch import batch_for_shader
 class VertexContainer:
 
   def __init__(self):
-    self.__shader = gpu.shader.from_builtin('3D_UNIFORM_COLOR')
+    self.__shader = gpu.shader.from_builtin('UNIFORM_COLOR')
     self.__vertices = []
     self.__type = 'POINTS'
     self.__batch_points = None
@@ -37,9 +37,9 @@ class VertexContainer:
   def draw(self):
     if self.__batch_points and self.get_vertex_count() > 0:
       self.__shader.bind()
-      bgl.glPointSize(10)
-      bgl.glLineWidth(4)
+
+      gpu.state.blend_set("ALPHA")
+      gpu.state.point_size_set(10)
+
       self.__shader.uniform_float("color", (1.0, 1.0, 1.0, 1.0))
       self.__batch_points.draw(self.__shader)
-      bgl.glPointSize(1)
-      bgl.glLineWidth(1)
