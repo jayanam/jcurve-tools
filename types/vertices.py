@@ -2,10 +2,12 @@ import gpu
 import bgl
 from gpu_extras.batch import batch_for_shader
 
+from .. utils.shader_utils import *
+
 class VertexContainer:
 
   def __init__(self):
-    self.__shader = gpu.shader.from_builtin('UNIFORM_COLOR')
+    self.__shader = get_builtin_shader('UNIFORM_COLOR', '3D')
     self.__vertices = []
     self.__type = 'POINTS'
     self.__batch_points = None
