@@ -40,6 +40,10 @@ class VertexContainer:
 
       gpu.state.blend_set("ALPHA")
       gpu.state.point_size_set(10)
+      gpu.state.line_width_set(4)
 
       self.__shader.uniform_float("color", (1.0, 1.0, 1.0, 1.0))
       self.__batch_points.draw(self.__shader)
+
+      gpu.state.point_size_set(1)
+      gpu.state.line_width_set(1)

@@ -1,9 +1,9 @@
 bl_info = {
     "name" : "JCurve Tools",
     "author" : "jayanam",
-    "description" : "Curve tools for Blender 2.8 - 3.x",
+    "description" : "Curve tools for Blender 2.8 - 4.x",
     "blender" : (2, 80, 0),
-    "version" : (0, 4, 3, 0),
+    "version" : (1, 4, 0, 1),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
